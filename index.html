@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Soul Shades" />
+    <meta name="theme-color" content="#0a0805" />
+    <!-- Icons: the stacked SOUL / SHADES logo. Rendered to images from the
+         site's own lettering, because a browser tab can't load web fonts. -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://i.ytimg.com" />
+
+    <!--
+      Home-page title, description and link-preview tags. They are written
+      here as plain HTML because Facebook, iMessage, Slack, LinkedIn and X
+      read previews without running JavaScript. src/main.tsx removes every
+      tag marked data-rh when the app starts, and each page then supplies
+      its own through <Helmet>. Keep the text in step
+      with SEO in src/App.tsx.
+    -->
+    <title data-rh="true">Soul Shades | NYC DJ + Live Violin Duo for Weddings &amp; Corporate Events</title>
+    <meta data-rh="true" name="description" content="Soul Shades is the New York duo of DJ DX and violinist, pianist and vocalist Julie Schatz. Book the duo or either artist for weddings, corporate events and private parties. DJ + live violin from $3,500." />
+    <link data-rh="true" rel="canonical" href="https://soulshadesmusic.com/" />
+    <meta data-rh="true" property="og:type" content="website" />
+    <meta data-rh="true" property="og:site_name" content="Soul Shades" />
+    <meta data-rh="true" property="og:locale" content="en_US" />
+    <meta data-rh="true" property="og:url" content="https://soulshadesmusic.com/" />
+    <meta data-rh="true" property="og:title" content="Soul Shades | NYC DJ + Live Violin Duo for Weddings &amp; Corporate Events" />
+    <meta data-rh="true" property="og:description" content="DJ DX and Julie Schatz: DJ sets with live violin, keys and vocals for weddings, corporate events and private parties in New York and beyond." />
+    <meta data-rh="true" property="og:image" content="https://soulshadesmusic.com/og-image.jpg" />
+    <meta data-rh="true" property="og:image:width" content="1200" />
+    <meta data-rh="true" property="og:image:height" content="630" />
+    <meta data-rh="true" property="og:image:alt" content="Soul Shades: DJ DX and Julie Schatz, NYC DJ and live violin duo" />
+    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
+    <meta data-rh="true" name="twitter:title" content="Soul Shades | NYC DJ + Live Violin Duo for Weddings &amp; Corporate Events" />
+    <meta data-rh="true" name="twitter:description" content="DJ DX and Julie Schatz: DJ sets with live violin, keys and vocals for weddings, corporate events and private parties in New York and beyond." />
+    <meta data-rh="true" name="twitter:image" content="https://soulshadesmusic.com/og-image.jpg" />
+    <meta data-rh="true" name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Soul Shades: facts for AI assistants" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["MusicGroup", "EntertainmentBusiness"],
+      "@id": "https://soulshadesmusic.com/#soulshades",
+      "name": "Soul Shades",
+      "url": "https://soulshadesmusic.com/",
+      "description": "Soul Shades is a New York-based music duo of DJ DX and vocalist and multi-instrumentalist Julie Schatz. Formed in 2024, they blend deep house, Afro house, jazz, R&B and hip-hop, playing DJ sets with live violin, vocals and keys. Available for weddings, corporate events, private parties and club nights in New York and worldwide.",
+      "slogan": "Blending genres, creating moods.",
+      "image": ["https://soulshadesmusic.com/og-image.jpg", "https://soulshadesmusic.com/ss-hero.jpg"],
+      "member": [
+        {
+          "@type": "Person",
+          "@id": "https://djdxmusic.com/#djdx",
+          "name": "DJ DX",
+          "jobTitle": "DJ, producer and rapper",
+          "url": "https://djdxmusic.com/",
+          "sameAs": ["https://djdxmusic.com/"]
+        },
+        {
+          "@type": "Person",
+          "@id": "https://julieschatzmusic.com/#julie",
+          "name": "Julie Schatz",
+          "jobTitle": "Vocalist, violinist and multi-instrumentalist",
+          "url": "https://julieschatzmusic.com/",
+          "sameAs": ["https://julieschatzmusic.com/"]
+        }
+      ],
+      "genre": ["Deep House", "Afro House", "Jazz", "R&B", "Hip-Hop", "Reggaeton"],
+      "foundingDate": "2024",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "New York",
+        "addressRegion": "NY",
+        "addressCountry": "US"
+      },
+      "areaServed": ["New York", "New Jersey", "Worldwide"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Soul Shades Music — Bookings",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Soul Shades",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 3500,
+                  "priceCurrency": "USD"
+                },
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Soul Shades — DJ + Live Violin",
+                  "description": "DJ DX on the decks with Julie playing violin, keys and vocals over the mix. Our signature set for galas, receptions and dance floors.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Soul Shades — Violin + Piano Duo",
+                  "description": "Two musicians, violin and piano, for ceremonies, cocktail hours and dinners where the room should breathe.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Soul Shades — DJ + Live Piano",
+                  "description": "A DJ set with live keys played on top: jazz chords over house, soul over hip-hop.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "DJ DX",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "DJ DX — Corporate Events & Holiday Parties",
+                  "description": "Receptions, galas, launches and office parties, with run-of-show planning and COI on request.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "DJ DX — Weddings",
+                  "description": "Ceremony through after-party, reading the room from the first dance to the last song.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "DJ DX — Private Parties & Birthdays",
+                  "description": "Milestone birthdays, rooftops, lounges and homes.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "DJ DX — Sweet 16s, Quinceañeras & Mitzvahs",
+                  "description": "High-energy sets with an MC, built around the guest of honor.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Julie Schatz",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Julie Schatz — Wedding Ceremony Violin",
+                  "description": "Prelude, processional and recessional on solo violin, sound system included.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Julie Schatz — Jazz Piano & Cocktail Hour",
+                  "description": "Jazz and modern piano for cocktail hours, dinners and receptions.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Julie Schatz — Hip-Hop & House Violin over a DJ",
+                  "description": "Live violin layered over a DJ set, for parties that want a moment on the dance floor.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Julie Schatz — Corporate Events",
+                  "description": "Solo violin or piano for client dinners, launches and galas, from background to feature performance.",
+                  "areaServed": [
+                    "New York",
+                    "New Jersey",
+                    "Connecticut"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "email": "bookings@soulshadesmusic.com",
+      "sameAs": [
+        "https://www.tiktok.com/@soulshadesmusic",
+        "https://www.threads.net/@soulshadesmusic",
+        "https://x.com/soulshadesmusic",
+        "https://www.instagram.com/soulshadesmusic/",
+        "https://open.spotify.com/artist/2GES5fSFNcx25lv9RFcQjP",
+        "https://music.apple.com/us/artist/soul-shades/1783698611",
+        "https://www.youtube.com/@soulshadesmusic",
+        "https://soundcloud.com/soulshadesmusic",
+        "https://soulshadesmusic.bandcamp.com/"
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://soulshadesmusic.com/#website",
+      "name": "Soul Shades",
+      "url": "https://soulshadesmusic.com/",
+      "description": "Official website of Soul Shades — DJ DX & Julie Schatz. Music, videos, and bookings.",
+      "publisher": { "@id": "https://soulshadesmusic.com/#soulshades" },
+      "inLanguage": "en-US"
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

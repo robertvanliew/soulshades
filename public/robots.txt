@@ -1,0 +1,26 @@
+# Soul Shades Music — https://soulshadesmusic.com
+
+User-agent: *
+Allow: /
+
+# AI answer engines — explicitly allowed so Soul Shades can be cited
+# in ChatGPT / Perplexity / Claude / Google AI Overviews results.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://soulshadesmusic.com/sitemap.xml

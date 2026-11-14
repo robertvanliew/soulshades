@@ -1,0 +1,18 @@
+node_modules
+dist
+.env
+.env.local
+
+
+# Vercel CLI link + local logs
+.vercel
+*.log
+
+# Not part of the site: screen recordings of other companies' websites used
+# as design reference, the release's source artwork (the web-ready copies
+# live in public/releases), and local AI tooling.
+screenshot idea/
+Get Up Album cover/
+Skills/
+_AGENTS.md
+.superpowers/

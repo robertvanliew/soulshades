@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://soulshadesmusic.com/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <image:image>
+      <image:loc>https://soulshadesmusic.com/og-image.jpg</image:loc>
+      <image:title>Soul Shades: NYC DJ + live violin duo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://soulshadesmusic.com/ss-hero.jpg</image:loc>
+      <image:title>Soul Shades: DJ DX and Julie Schatz</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://soulshadesmusic.com/nautadutilh-group-photo-cathedral-nyc.jpg</image:loc>
+      <image:title>NautaDutilh reception at 620 Loft and Garden, Rockefeller Center</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://soulshadesmusic.com/glasshouse-dj-dx-contentsquare-nyc.jpg</image:loc>
+      <image:title>DJ DX at Contentsquare CX Circle NYC, The Glasshouse</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://soulshadesmusic.com/privacy</loc>
+    <lastmod>2026-11-13</lastmod>
+  </url>
+  <url>
+    <loc>https://soulshadesmusic.com/terms</loc>
+    <lastmod>2026-11-13</lastmod>
+  </url>
+</urlset>
