@@ -13,12 +13,14 @@ export default function Hero() {
 
       <div className="ss-hero-content">
 
-        {/* Extruded wordmark: a solid copy carries the "sides", the face sits on top. */}
+        {/* Extruded wordmark. The "sides" are drawn by CSS from data-text
+            (.ss-hero-word::before), not by a second copy of the word in the
+            page: a duplicate made search engines read the heading as
+            "Soul Soul Shades Shades". */}
         <h1 className="ss-hero-name">
-          {(['Soul', 'Shades'] as const).map(w => (
-            <span key={w} className={`ss-hero-word ss-hero-${w.toLowerCase()}`}>
-              <span className="ss-hero-word-depth" aria-hidden="true">{w}</span>
-              <span className="ss-hero-word-face">{w}</span>
+          {(['Soul', 'Shades'] as const).map((w, i) => (
+            <span key={w} className={`ss-hero-word ss-hero-${w.toLowerCase()}`} data-text={w}>
+              <span className="ss-hero-word-face">{w}</span>{i === 0 ? ' ' : ''}
             </span>
           ))}
         </h1>

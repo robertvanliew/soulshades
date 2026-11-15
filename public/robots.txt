@@ -1,26 +1,39 @@
-# Soul Shades Music — https://soulshadesmusic.com
+# Soul Shades Music - https://soulshadesmusic.com
+# Everything public is open to every crawler. The named groups below repeat
+# that for the crawlers that decide whether AI search can cite the site, so
+# there is no doubt about intent.
 
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /thank-you
 
-# AI answer engines — explicitly allowed so Soul Shades can be cited
-# in ChatGPT / Perplexity / Claude / Google AI Overviews results.
-User-agent: GPTBot
+# Search engines
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Applebot
+User-agent: DuckDuckBot
 Allow: /
+Disallow: /api/
+Disallow: /thank-you
 
+# AI search: these fetch pages to cite them in answers
 User-agent: OAI-SearchBot
-Allow: /
-
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
 User-agent: PerplexityBot
+User-agent: Perplexity-User
 Allow: /
+Disallow: /api/
 
+# AI training: allowed, so the models know who Soul Shades are
+User-agent: GPTBot
 User-agent: ClaudeBot
-Allow: /
-
 User-agent: Google-Extended
-Allow: /
-
 User-agent: Applebot-Extended
+User-agent: CCBot
 Allow: /
+Disallow: /api/
 
 Sitemap: https://soulshadesmusic.com/sitemap.xml

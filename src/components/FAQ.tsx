@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import Reveal from './Reveal';
 
 /* Questions people (and answer engines) actually ask. The visible answers
@@ -81,20 +81,19 @@ export default function FAQ() {
                     <span className="faq-icon" aria-hidden="true" />
                   </button>
                 </h3>
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      id={panelId}
-                      className="faq-a"
-                      initial={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
-                      animate={reduce ? { opacity: 1 } : { height: 'auto', opacity: 1 }}
-                      exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    >
-                      <p>{a}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Every answer stays in the page (collapsed, not removed), so
+                    search engines and AI assistants can read all of them, not
+                    only the one that happens to be open. */}
+                <motion.div
+                  id={panelId}
+                  className="faq-a"
+                  aria-hidden={!isOpen}
+                  initial={false}
+                  animate={isOpen ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
+                  transition={reduce ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                >
+                  <p>{a}</p>
+                </motion.div>
               </Reveal>
             );
           })}

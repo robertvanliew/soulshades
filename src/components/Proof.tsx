@@ -108,9 +108,9 @@ export default function Proof() {
             <span className="proof-kicker">Track record</span>
             <h2 className="proof-title" id="proof-title">
               <span className="proof-wordmark" aria-label="Soul Shades">
-                <span className="proof-wm-soul" aria-hidden="true">Soul</span>
+                <span className="proof-wm-soul" aria-hidden="true">Soul</span>{' '}
                 <span className="proof-wm-shades" aria-hidden="true">Shades</span>
-              </span>
+              </span>{' '}
               <span className="proof-by">by the numbers</span>
             </h2>
           </Reveal>

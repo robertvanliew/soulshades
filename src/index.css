@@ -4093,8 +4093,9 @@ html { scroll-padding-top: 92px; }
 /* ═══════════════════════════════════════════════════════════════════
    HERO WORDMARK — static extrusion, no motion.
    ═══════════════════════════════════════════════════════════════════ */
-/* Extruded wordmark: a solid copy carries the stacked-shadow "sides",
-   the face sits on top (a clipped-gradient face can't hold a text-shadow). */
+/* Extruded wordmark: a CSS-generated copy (::before, from data-text) carries
+   the stacked-shadow "sides"; the face sits on top (a clipped-gradient face
+   can't hold a text-shadow). Generated, so it isn't read as heading text. */
 .ss-hero-word {
   position: relative;
   display: block;
@@ -4102,13 +4103,14 @@ html { scroll-padding-top: 92px; }
   -webkit-text-fill-color: currentColor;
 }
 .ss-hero-word-face { position: relative; display: block; }
-.ss-hero-word-depth {
+.ss-hero-word::before {
+  content: attr(data-text);
   position: absolute;
   inset: 0;
   display: block;
   user-select: none;
 }
-.ss-hero-soul .ss-hero-word-depth {
+.ss-hero-soul::before {
   color: #8f8f8f;
   text-shadow:
     0 0.008em 0 #b9b9b9, 0 0.016em 0 #a9a9a9, 0 0.024em 0 #989898,
@@ -4116,7 +4118,7 @@ html { scroll-padding-top: 92px; }
     0 0.056em 0 #505050, 0 0.064em 0 #3f3f3f,
     0 0.10em 0.12em rgba(0,0,0,0.55), 0 0.22em 0.42em rgba(0,0,0,0.5);
 }
-.ss-hero-shades .ss-hero-word-depth {
+.ss-hero-shades::before {
   color: #4A3322;
   text-shadow:
     0 0.008em 0 #9C7656, 0 0.016em 0 #8E6B4C, 0 0.024em 0 #806043,
