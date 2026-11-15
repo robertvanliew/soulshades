@@ -2,7 +2,9 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2025-02-24.acacia' as any,
+  // Matches the webhook destination's version in Stripe. Needed for the
+  // per-checkout branding below (added to the API in September 2025).
+  apiVersion: '2026-04-22.dahlia' as any,
 });
 
 // ── What can be bought ───────────────────────────────────────────────────────
@@ -102,12 +104,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       customer_email: email,
+      // This Stripe account also sells for djdxmusic.com, so the account's own
+      // logo and colours are DJ DX's. These override them for this checkout only.
+      branding_settings: {
+        display_name: 'Soul Shades Music',
+        logo: { type: 'url', url: `${siteUrl}/stripe-logo.png` },
+        background_color: '#0a0805',
+        button_color: '#C6A07A',
+        border_style: 'pill',
+      },
       line_items: [
         {
           price_data: {
             currency: 'usd',
             product_data: {
-              name: `Soul Shades Music – ${trackIds.length} track${trackIds.length > 1 ? 's' : ''}`,
+              // Name the music, not just a count: this is what the buyer sees on
+              // the payment page, the receipt and their bank's description.
+              name: trackIds.length === 1
+                ? `“${TRACKS[trackIds[0]].title}” by Soul Shades`
+                : `Soul Shades: ${trackIds.length} tracks`,
+              description: trackIds.length === 1
+                ? 'Digital download. Your link arrives by email right after payment.'
+                : `${trackIds.map(id => TRACKS[id].title).join(' · ')}`.slice(0, 480) + '. Digital downloads, delivered by email.',
+              images: [`${siteUrl}/icon-512.png`],
             },
             unit_amount: Math.round(amount * 100), // convert to cents
           },
