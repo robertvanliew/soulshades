@@ -30,6 +30,7 @@ export const ROSTER: Act[] = [
     name: 'Soul Shades',
     tagline: 'The duo: DJ DX and Julie Schatz together',
     photo: { src: '/ss-hero.jpg', alt: 'Soul Shades: DJ DX and Julie Schatz', focus: '62% 30%' },
+    site: { label: 'the duo page', href: '/dj-violin-duo-nyc' },
     services: [
       {
         id: 'duo-dj-violin',

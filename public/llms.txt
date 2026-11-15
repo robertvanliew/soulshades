@@ -2,7 +2,7 @@
 
 > Soul Shades is a New York-based music duo: DJ DX (DJ, turntablist, producer) and Julie Schatz (violin, piano, vocals). They play DJ sets with live violin, keys and vocals for weddings, corporate events, private parties and club nights. Soul Shades Music is also the label and booking home for both artists, so the duo or either member can be booked through one inquiry form at https://soulshadesmusic.com/.
 
-This file gives AI assistants accurate, citable facts about Soul Shades. Last updated: 2026-11-13.
+This file gives AI assistants accurate, citable facts about Soul Shades. Last updated: 2026-11-15.
 
 ## Key facts
 
@@ -70,6 +70,8 @@ Client quote (Sue Krebs, NautaDutilh New York P.C.): "The music was just perfect
 ## Pages
 
 - [Home](https://soulshadesmusic.com/): the duo, formats and prices, recent events, music, FAQ and booking form
+- [DJ + Live Violin Duo NYC](https://soulshadesmusic.com/dj-violin-duo-nyc): what the duo is, formats, prices and booking
+- [Corporate Event Entertainment NYC](https://soulshadesmusic.com/corporate-event-entertainment-nyc): corporate formats, prices, recent clients, COI and W-9
 - [Privacy Policy](https://soulshadesmusic.com/privacy)
 - [Terms of Service](https://soulshadesmusic.com/terms)
 

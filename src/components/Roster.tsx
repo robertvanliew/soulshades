@@ -128,9 +128,13 @@ export default function Roster() {
                     Book {act.name}
                   </button>
                   {act.site && (
-                    <a className="rp-site" href={act.site.href} target="_blank" rel="noopener">
-                      Visit {act.site.label} <ArrowUpRight />
-                    </a>
+                    act.site.href.startsWith('/') ? (
+                      <a className="rp-site" href={act.site.href}>See {act.site.label} <span aria-hidden="true">→</span></a>
+                    ) : (
+                      <a className="rp-site" href={act.site.href} target="_blank" rel="noopener">
+                        Visit {act.site.label} <ArrowUpRight />
+                      </a>
+                    )
                   )}
                 </footer>
               </div>

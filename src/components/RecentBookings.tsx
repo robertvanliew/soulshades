@@ -197,7 +197,10 @@ export default function RecentBookings() {
       <Reveal className="gig-cta">
         <div>
           <h3>Planning an event like these?</h3>
-          <p>Tell us your date. We’ll confirm availability and send a written quote within 24–48 hours.</p>
+          <p>
+            Tell us your date. We’ll confirm availability and send a written quote within 24–48 hours.{' '}
+            <a href="/corporate-event-entertainment-nyc" className="gig-cta-link">How corporate bookings work →</a>
+          </p>
         </div>
         <button
           type="button"

@@ -30,22 +30,23 @@ export default function SiteFooter({ email = 'bookings@soulshadesmusic.com', boo
 
           <nav className="footer-nav-col" aria-label="On this page">
             <span className="footer-nav-heading">Explore</span>
-            <a href="#new-release" className="footer-nav-link">New Release</a>
-            <a href="#about" className="footer-nav-link">About</a>
-            <a href="#recent-booking" className="footer-nav-link">Where We’ve Played</a>
-            <a href="#catalog" className="footer-nav-link">Music Store</a>
-            <a href="#merch" className="footer-nav-link">Merch</a>
-            <a href="#videos" className="footer-nav-link">Videos</a>
-            <a href="#faq" className="footer-nav-link">FAQ</a>
+            <a href="/#new-release" className="footer-nav-link">New Release</a>
+            <a href="/#about" className="footer-nav-link">About</a>
+            <a href="/#recent-booking" className="footer-nav-link">Where We’ve Played</a>
+            <a href="/#catalog" className="footer-nav-link">Music Store</a>
+            <a href="/#merch" className="footer-nav-link">Merch</a>
+            <a href="/#videos" className="footer-nav-link">Videos</a>
+            <a href="/#faq" className="footer-nav-link">FAQ</a>
           </nav>
 
           <nav className="footer-nav-col" aria-label="Roster and booking">
             <span className="footer-nav-heading">Roster</span>
-            <a href="#services" className="footer-nav-link">Soul Shades, the duo</a>
+            <a href="/dj-violin-duo-nyc" className="footer-nav-link">DJ + live violin duo</a>
+            <a href="/corporate-event-entertainment-nyc" className="footer-nav-link">Corporate events</a>
             <a href="https://djdxmusic.com/" {...ext} className="footer-nav-link">DJ DX <Out /></a>
             <a href="https://julieschatzmusic.com/" {...ext} className="footer-nav-link">Julie Schatz <Out /></a>
-            <a href="#services" className="footer-nav-link">Formats &amp; pricing</a>
-            <a href="#ss-booking" className="footer-nav-link">Booking inquiry</a>
+            <a href="/#services" className="footer-nav-link">Formats &amp; pricing</a>
+            <a href="/#ss-booking" className="footer-nav-link">Booking inquiry</a>
           </nav>
 
           <nav className="footer-nav-col" aria-label="Follow Soul Shades">
