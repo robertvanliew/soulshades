@@ -91,22 +91,32 @@ function CoverArt() {
   );
 }
 
-export default function NewRelease() {
+export const RELEASE_URL = 'https://soulshadesmusic.com/get-up';
+export const releaseJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicRecording',
+  '@id': `${RELEASE_URL}#recording`,
+  name: 'Get Up',
+  byArtist: { '@id': 'https://soulshadesmusic.com/#soulshades' },
+  datePublished: '2026-12-18',
+  image: 'https://soulshadesmusic.com/releases/get-up.jpg',
+  url: RELEASE_URL,
+};
+
+/* On the home page this is a section with an h2 and a link to /get-up; on
+   /get-up itself (asPage) the title is the page's h1 and the page supplies
+   the structured data. */
+export default function NewRelease({ asPage = false }: { asPage?: boolean }) {
   const { out, days, hours, minutes } = useCountdown(RELEASE);
+  const Title = asPage ? 'h1' : 'h2';
 
   return (
     <section className="nr" id="new-release" aria-labelledby="nr-title">
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'MusicRecording',
-          name: 'Get Up',
-          byArtist: { '@id': 'https://soulshadesmusic.com/#soulshades' },
-          datePublished: '2026-12-18',
-          image: 'https://soulshadesmusic.com/releases/get-up.jpg',
-          url: 'https://soulshadesmusic.com/#new-release',
-        })}</script>
-      </Helmet>
+      {!asPage && (
+        <Helmet>
+          <script type="application/ld+json">{JSON.stringify(releaseJsonLd)}</script>
+        </Helmet>
+      )}
       <img className="nr-ambient" src={webp(AMBIENT)} alt="" aria-hidden="true" />
 
       <Reveal className="nr-cover-wrap" duration={0.9}>
@@ -118,7 +128,7 @@ export default function NewRelease() {
           <span className="nr-dot" aria-hidden="true" />
           {out ? 'Out now' : 'New release · Friday, December 18'}
         </p>
-        <h2 className="nr-title" id="nr-title">Get Up</h2>
+        <Title className="nr-title" id="nr-title">Get Up</Title>
         <p className="nr-sub">
           {out
             ? 'The new Soul Shades release is out now on every platform.'
@@ -141,6 +151,7 @@ export default function NewRelease() {
             <AppleMusicIcon /> Apple Music
           </a>
         </div>
+        {!asPage && <a className="nr-more" href="/get-up">About the release →</a>}
       </Reveal>
     </section>
   );

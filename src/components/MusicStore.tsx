@@ -92,7 +92,7 @@ export default function MusicStore({ catalog, title = "Music Store", subTitle = 
                       type="button"
                       className={`tl-buy${inCart ? ' tl-buy--added' : ''}`}
                       onClick={(e) => addToCart(e, track)}
-                      aria-label={inCart ? `${track.title} is in your cart` : `Add ${track.title} to cart`}
+                      aria-label={inCart ? `${track.title} is in your cart` : `Buy ${track.title}, from $3`}
                     >
                       {inCart ? (
                         <>
@@ -100,7 +100,7 @@ export default function MusicStore({ catalog, title = "Music Store", subTitle = 
                           <span>Added</span>
                         </>
                       ) : (
-                        <span>Buy</span>
+                        <span>Buy <span className="tl-buy-price">· From $3</span></span>
                       )}
                     </button>
                   </div>

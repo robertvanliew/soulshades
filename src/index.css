@@ -6787,3 +6787,25 @@ html { scrollbar-width: auto; scrollbar-color: #8A6240 #0f0b07; }
 .footer-credit a:hover { color: var(--text-1); }
 .footer-credit a:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 2px; }
 .page-foot .footer-credit { order: 99; padding-bottom: 0; }
+
+/* Event write-ups (/events/…) */
+.cs-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cs-shot { margin: 0; }
+.cs-shot--wide { grid-column: 1 / -1; }
+.cs-shot img, .cs-shot video { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 18px; border: 1px solid var(--line); background: #0d0b09; }
+.cs-shot--wide img { aspect-ratio: 2 / 1; }
+.cs-shot figcaption { margin-top: 10px; font-size: 13.5px; color: var(--text-3); }
+.sp-event-link { color: inherit; text-decoration: none; }
+.sp-event-link:hover span { text-decoration: underline; text-underline-offset: 4px; }
+.sp-event-more { display: inline-block; margin: 4px 0 18px; font-size: 14px; }
+.gig-more { display: inline-block; margin-top: 14px; font-size: 14px; }
+.nr-more { display: inline-block; margin-top: 18px; font-size: 14px; color: var(--gold2); text-decoration: underline; text-decoration-color: rgba(198,160,122,0.45); text-underline-offset: 4px; }
+.gu .nr { margin-bottom: 0; }
+.tl-buy-price { opacity: 0.72; font-weight: 500; }
+@media (max-width: 900px) {
+  .cs-gallery { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .cs-gallery { grid-template-columns: 1fr; }
+  .cs-shot--wide img { aspect-ratio: 3 / 2; }
+}

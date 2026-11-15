@@ -25,6 +25,7 @@ type Media = {
 
 type Gig = {
   id: string;
+  href: string;
   date: string;
   title: string;
   venue: string;
@@ -38,6 +39,7 @@ type Gig = {
 const GIGS: Gig[] = [
   {
     id: 'contentsquare',
+    href: '/events/contentsquare-cx-circle-nyc',
     date: 'October 13, 2026',
     title: 'Contentsquare CX Circle NYC',
     venue: 'The Glasshouse',
@@ -78,6 +80,7 @@ const GIGS: Gig[] = [
   },
   {
     id: 'nautadutilh',
+    href: '/events/nautadutilh-620-loft-garden',
     date: 'June 2026',
     title: 'NautaDutilh Reception',
     venue: '620 Loft & Garden',
@@ -176,6 +179,7 @@ export default function RecentBookings() {
                 {g.title} <span>at {g.venue}</span>
               </h3>
               <p className="gig-sub">{g.sub}</p>
+              <a href={g.href} className="gig-cta-link gig-more">Read the full event write-up →</a>
             </div>
             <dl className="gig-specs">
               {g.specs.map(([k, v]) => (

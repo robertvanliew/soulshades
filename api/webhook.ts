@@ -204,6 +204,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 </body>
 </html>
       `,
+    }, {
+      // Stripe sometimes delivers the same event twice. The same key within a
+      // 2-hour window (how long the links last) makes Resend send only once;
+      // a manual "Resend" from Stripe after the links expire still goes out.
+      idempotencyKey: `download-${event.id}-${Math.floor(Date.now() / (2 * 60 * 60 * 1000))}`,
     })
 
     if (error) {

@@ -19,7 +19,7 @@ const SITE = 'https://soulshadesmusic.com';
 type Format = { name: string; bestFor: string; price: string };
 type QA = { q: string; a: ReactNode; text: string };
 type Fact = [label: string, value: string];
-type Event = { title: string; venue: string; meta: string; img: string; alt: string; specs: Fact[] };
+type Event = { title: string; venue: string; meta: string; img: string; alt: string; specs: Fact[]; href: string };
 type Quote = { text: string; name: string; org: string };
 
 type PageData = {
@@ -52,14 +52,16 @@ const EVENTS: Event[] = [
     img: '/glasshouse-event-space-hudson-nyc.jpg',
     alt: 'The Glasshouse event space at 660 12th Avenue, Hell’s Kitchen, during Contentsquare CX Circle NYC',
     specs: [['Client', 'Contentsquare'], ['Venue', 'The Glasshouse, Hell’s Kitchen'], ['Guests', '1,000+'], ['Set', 'Evening reception, 5 to 7 pm']],
+    href: '/events/contentsquare-cx-circle-nyc',
   },
   {
     title: 'NautaDutilh Reception',
     venue: '620 Loft & Garden',
-    meta: 'June 2026',
+    meta: 'June 2, 2026',
     img: '/nautadutilh-group-photo-cathedral-nyc.jpg',
     alt: 'NautaDutilh guests on the 620 Loft & Garden rooftop in front of St. Patrick’s Cathedral',
     specs: [['Client', 'NautaDutilh New York P.C.'], ['Venue', '620 Loft & Garden, Rockefeller Center'], ['Guests', '175'], ['Set', 'DJ set with live violin']],
+    href: '/events/nautadutilh-620-loft-garden',
   },
 ];
 
@@ -386,10 +388,11 @@ function Body({ d }: { d: PageData }) {
               <div className="sp-event-photo"><img {...responsive(ev.img, '(min-width: 901px) 560px, 100vw')} alt={ev.alt} loading="lazy" decoding="async" /></div>
               <div className="sp-event-body">
                 <p className="gig-meta">{ev.meta}</p>
-                <h3>{ev.title} <span>at {ev.venue}</span></h3>
+                <h3><a href={ev.href} className="sp-event-link">{ev.title} <span>at {ev.venue}</span></a></h3>
                 <dl className="gig-specs">
                   {ev.specs.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
                 </dl>
+                <a href={ev.href} className="gig-cta-link sp-event-more">Read the full event write-up →</a>
               </div>
             </article>
           ))}

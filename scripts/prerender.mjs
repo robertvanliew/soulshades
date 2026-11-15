@@ -13,7 +13,7 @@
    The browser still loads the same app on top and takes over the page, so
    nothing changes for visitors. If any page fails to render, the build fails
    rather than shipping a site with missing pages. */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { createServer } from 'vite';
@@ -61,6 +61,7 @@ try {
     if (titles !== 1 || !html.includes('<h1') || text.length < 300) {
       throw new Error(`${path}: unexpected output (titles=${titles}, text=${text.length} chars)`);
     }
+    mkdirSync(dirname(join(dist, file)), { recursive: true });
     writeFileSync(join(dist, file), html);
     console.log(`prerendered ${path.padEnd(28)} -> dist/${file.padEnd(16)} ${(html.length / 1024).toFixed(0)} KB, ${text.split(' ').length} words`);
   }
