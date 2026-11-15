@@ -5,6 +5,30 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2025-02-24.acacia' as any,
 });
 
+// ── What can be bought ───────────────────────────────────────────────────────
+// The server decides which file goes with each track: the browser only says
+// which track numbers are in the cart. (Trusting file names from the browser
+// would let anyone pay $3 and download any file in the bucket, which also
+// holds the DJ DX masters.) Same list in api/create-checkout.ts and
+// api/webhook.ts — Vercel doesn't bundle shared files between functions here —
+// and it must match src/catalog.ts.
+const TRACKS: Record<string, { title: string; file: string }> = {
+  '101': { title: 'Wait For Me', file: 'Soul Shades DJ Mixes/Soul Shades, DJ DX, Julie Schatz - Wait For Me.mp3' },
+  '102': { title: 'Beyond Your Mind', file: 'Soul Shades DJ Mixes/Soul Shades, Julie Schatz, DJ DX - Beyond Your Mind.mp3' },
+  '103': { title: 'Buzz In London', file: 'Soul Shades DJ Mixes/Soul Shades - Buzz In London ft. (DJ DX & Julie Schatz).wav' },
+  '104': { title: 'Always On Time x Fired Up', file: 'Soul Shades DJ Mixes/Soul Shades - Always on time x Fired Up by (DJ DX & Julie Schatz).mp3' },
+  '105': { title: 'Be Honest x Everything', file: 'Soul Shades DJ Mixes/Soul Shades - Be honest x Everything by (DJ DX & Julie Schatz).wav' },
+  '106': { title: 'Cola x Vivrant Thing', file: 'Soul Shades DJ Mixes/Soul Shades - Cola x  Vivrant Thing by(DJ DX & Julie Schatz).wav' },
+  '107': { title: 'Hannah x Everybody Everybody', file: 'Soul Shades DJ Mixes/Soul Shades - Hannah x Everybody Everybody by ( DJ DX & Julie Schatz).mp3' },
+  '108': { title: 'Kiss Of Life', file: 'Soul Shades DJ Mixes/Soul Shades - Kiss Of Life by (DJ DX & Julie Schatz).wav' },
+  '109': { title: 'Money Talks (Dirty Cash) x RIZZ', file: 'Soul Shades DJ Mixes/Soul Shades - Money Talks (Dirty Cash) x RIZZ by (DJ DX & Julie Schatz).wav' },
+  '110': { title: 'Rock The Boat x You Are The One', file: 'Soul Shades DJ Mixes/Soul Shades - Rock the boat x You are the one by (DJ DX & Julie Schatz).mp3' },
+  '111': { title: 'Streets x Rapture III x Violin', file: 'Soul Shades DJ Mixes/Soul Shades - Streets x Rapture III x Violin by (DJ DX & Julie Schatz).wav' },
+  '112': { title: 'The Way You x Everybody x Never x Beso', file: 'Soul Shades DJ Mixes/Soul Shades - The Way You  x Everybody  x Never x Beso by (DJ DX & Julie Schatz).wav' },
+  '113': { title: 'Unthinkable x Life Gets Hard', file: 'Soul Shades DJ Mixes/Soul Shades - Unthinkable x Life Gets Hard by (DJ DX & Julie Schatz).wav' },
+  '114': { title: 'Addicted x Give Me The Night', file: "Soul Shades DJ Mixes/Soul Shades - 'Addicted' Chainsmokers x 'Give me the night' (Remix).wav" },
+};
+
 /** Only our own pages may start a checkout (stops other sites calling this). */
 function allowedOrigin(origin: string | undefined): boolean {
   if (!origin) return true; // some browsers omit Origin on same-origin requests
@@ -41,25 +65,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(429).json({ error: 'Too many attempts. Please wait a few minutes and try again.' })
   }
 
-  const { amount, email, name, trackIds, r2FileNames, trackTitles } = req.body as {
+  const { amount, email, name, trackIds: rawIds } = (req.body ?? {}) as {
     amount: number
     email: string
-    name: string
+    name?: string
     trackIds: string[]
-    r2FileNames?: string[]
-    trackTitles?: string[]
   }
 
   if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Valid email required' })
   }
-  if (!trackIds || !Array.isArray(trackIds) || trackIds.length === 0 || trackIds.length > 50) {
+  if (!Array.isArray(rawIds) || rawIds.length === 0 || rawIds.length > 50) {
     return res.status(400).json({ error: 'Invalid track selection' })
   }
-  // Only allow numeric track IDs — prevents arbitrary R2 key access
-  if (!trackIds.every((id: unknown) => typeof id === 'string' && /^\d+$/.test(id))) {
-    return res.status(400).json({ error: 'Invalid track IDs' })
+  // Only tracks this store sells; each counted once.
+  const trackIds = [...new Set(rawIds.map(String))]
+  if (!trackIds.every(id => Object.prototype.hasOwnProperty.call(TRACKS, id))) {
+    return res.status(400).json({ error: 'Invalid track selection' })
   }
+  const cleanName = typeof name === 'string' ? name.trim().slice(0, 100) : ''
 
   const minRequiredAmount = trackIds.length * 3;
   if (!amount || typeof amount !== 'number' || amount < minRequiredAmount || amount > 500) {
@@ -67,20 +91,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const siteUrl = process.env.SITE_URL || 'https://soulshadesmusic.com';
+    // Send buyers back to the address they bought from (a preview address,
+    // or the live domain); anything unrecognised falls back to SITE_URL.
+    const origin = typeof req.headers.origin === 'string' ? req.headers.origin : ''
+    const siteUrl = origin && allowedOrigin(origin) && /^https:\/\//.test(origin)
+      ? origin
+      : (process.env.SITE_URL || 'https://soulshadesmusic.com');
 
-    // Store r2FileNames array or strings in metadata. Metadata values are max 500 chars.
-    let r2FileNamesString = '';
-    if (r2FileNames && Array.isArray(r2FileNames)) {
-      r2FileNamesString = r2FileNames.join('||');
-      // Strip out any characters over 500 if we hit the limit, though ideally it should fit.
-      if (r2FileNamesString.length > 500) {
-        console.warn('r2FileNames exceeded 500 characters in metadata');
-        r2FileNamesString = r2FileNamesString.substring(0, 500);
-      }
-    } else {
-      r2FileNamesString = trackIds.map((id: string) => `${id}.mp3`).join('||');
-    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -98,14 +115,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         },
       ],
       mode: 'payment',
-      success_url: `${siteUrl}/thank-you?email=${encodeURIComponent(email)}`,
-      cancel_url: `${siteUrl}/`,
+      // No personal details in the address: it ends up in history and logs.
+      success_url: `${siteUrl}/thank-you`,
+      cancel_url: `${siteUrl}/#catalog`,
+      // Only track numbers are stored; the webhook looks up the files.
       metadata: {
         trackIds: trackIds.join(','),
         customerEmail: email,
-        customerName: name || '',
-        r2FileNames: r2FileNamesString,
-        trackTitles: (trackTitles || []).join('||').substring(0, 500),
+        customerName: cleanName,
       },
     });
 

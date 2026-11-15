@@ -20,7 +20,33 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2025-02-24.acacia' as any,
 });
 
-const BUCKET = process.env.R2_BUCKET_NAME || 'soul-shades-masters'
+// ── What can be bought ───────────────────────────────────────────────────────
+// The server decides which file goes with each track: the browser only says
+// which track numbers are in the cart. (Trusting file names from the browser
+// would let anyone pay $3 and download any file in the bucket, which also
+// holds the DJ DX masters.) Same list in api/create-checkout.ts and
+// api/webhook.ts — Vercel doesn't bundle shared files between functions here —
+// and it must match src/catalog.ts.
+const TRACKS: Record<string, { title: string; file: string }> = {
+  '101': { title: 'Wait For Me', file: 'Soul Shades DJ Mixes/Soul Shades, DJ DX, Julie Schatz - Wait For Me.mp3' },
+  '102': { title: 'Beyond Your Mind', file: 'Soul Shades DJ Mixes/Soul Shades, Julie Schatz, DJ DX - Beyond Your Mind.mp3' },
+  '103': { title: 'Buzz In London', file: 'Soul Shades DJ Mixes/Soul Shades - Buzz In London ft. (DJ DX & Julie Schatz).wav' },
+  '104': { title: 'Always On Time x Fired Up', file: 'Soul Shades DJ Mixes/Soul Shades - Always on time x Fired Up by (DJ DX & Julie Schatz).mp3' },
+  '105': { title: 'Be Honest x Everything', file: 'Soul Shades DJ Mixes/Soul Shades - Be honest x Everything by (DJ DX & Julie Schatz).wav' },
+  '106': { title: 'Cola x Vivrant Thing', file: 'Soul Shades DJ Mixes/Soul Shades - Cola x  Vivrant Thing by(DJ DX & Julie Schatz).wav' },
+  '107': { title: 'Hannah x Everybody Everybody', file: 'Soul Shades DJ Mixes/Soul Shades - Hannah x Everybody Everybody by ( DJ DX & Julie Schatz).mp3' },
+  '108': { title: 'Kiss Of Life', file: 'Soul Shades DJ Mixes/Soul Shades - Kiss Of Life by (DJ DX & Julie Schatz).wav' },
+  '109': { title: 'Money Talks (Dirty Cash) x RIZZ', file: 'Soul Shades DJ Mixes/Soul Shades - Money Talks (Dirty Cash) x RIZZ by (DJ DX & Julie Schatz).wav' },
+  '110': { title: 'Rock The Boat x You Are The One', file: 'Soul Shades DJ Mixes/Soul Shades - Rock the boat x You are the one by (DJ DX & Julie Schatz).mp3' },
+  '111': { title: 'Streets x Rapture III x Violin', file: 'Soul Shades DJ Mixes/Soul Shades - Streets x Rapture III x Violin by (DJ DX & Julie Schatz).wav' },
+  '112': { title: 'The Way You x Everybody x Never x Beso', file: 'Soul Shades DJ Mixes/Soul Shades - The Way You  x Everybody  x Never x Beso by (DJ DX & Julie Schatz).wav' },
+  '113': { title: 'Unthinkable x Life Gets Hard', file: 'Soul Shades DJ Mixes/Soul Shades - Unthinkable x Life Gets Hard by (DJ DX & Julie Schatz).wav' },
+  '114': { title: 'Addicted x Give Me The Night', file: "Soul Shades DJ Mixes/Soul Shades - 'Addicted' Chainsmokers x 'Give me the night' (Remix).wav" },
+};
+
+// Set in Vercel. The DJ DX site sells the same files from its bucket
+// (default name djdx-masters), and this site uses that bucket too.
+const BUCKET = process.env.R2_BUCKET_NAME || 'djdx-masters'
 // Signed URLs expire in 2 hours to prevent excessive sharing
 const EXPIRY_SECONDS = 60 * 60 * 2
 
@@ -65,19 +91,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const trackIdsStr = session.metadata?.trackIds
   const customerEmailRaw = session.metadata?.customerEmail || session.customer_details?.email
   const customerNameRaw = session.metadata?.customerName || session.customer_details?.name || 'Music Fan'
-  const r2FileNamesStr = session.metadata?.r2FileNames
-  const trackTitlesStr = session.metadata?.trackTitles
 
-  if (!trackIdsStr || !customerEmailRaw || !r2FileNamesStr) {
+  if (!trackIdsStr || !customerEmailRaw) {
     console.error('Missing necessary metadata on session', session.id)
     return res.status(200).json({ received: true })
   }
 
-  const trackIds = trackIdsStr.split(',').map(t => t.trim())
-  const r2FileNames = r2FileNamesStr.split('||').map(t => t.trim())
-  const trackTitles = trackTitlesStr ? trackTitlesStr.split('||').map(t => t.trim()) : []
+  // Files come from the fixed list above, never from the session.
+  const trackIds = trackIdsStr.split(',').map(t => t.trim()).filter(id => Object.prototype.hasOwnProperty.call(TRACKS, id))
+  const r2FileNames = trackIds.map(id => TRACKS[id].file)
+  const trackTitles = trackIds.map(id => TRACKS[id].title)
 
-  if (trackIds.length === 0 || r2FileNames.length === 0 || trackIds.length !== r2FileNames.length) {
+  if (trackIds.length === 0) {
     console.error('Invalid track or file names array', session.id)
     return res.status(200).json({ received: true })
   }

@@ -13,6 +13,7 @@ import './index.css';
 const Privacy = lazy(() => import('./pages/Legal').then(m => ({ default: m.Privacy })));
 const Terms = lazy(() => import('./pages/Legal').then(m => ({ default: m.Terms })));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const ThankYou = lazy(() => import('./pages/ThankYou'));
 
 // index.html carries the home page's title, description and link-preview tags
 // as plain HTML for services that don't run JavaScript (Facebook, iMessage,
@@ -42,6 +43,7 @@ createRoot(document.getElementById('root')!).render(
                 <Route path="/" element={<App />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/terms" element={<Terms />} />
+                <Route path="/thank-you" element={<ThankYou />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
