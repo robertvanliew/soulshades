@@ -1,0 +1,30 @@
+# After every successful production deploy on Vercel, tell Bing (and the other
+# IndexNow engines: Yandex, Naver, Seznam, Yep) to recrawl the site's pages.
+# Bing's index feeds Microsoft Copilot and ChatGPT search. Google ignores
+# IndexNow and reads the sitemap instead.
+#
+# Vercel's GitHub integration reports each deployment back to GitHub; this
+# workflow runs when that report says a production deployment succeeded.
+name: IndexNow
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment.environment, 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # Every URL in the sitemap. The site is small, so this stays well within
+      # IndexNow's guidance; switch to specific paths if it grows.
+      - run: node scripts/indexnow.mjs --all

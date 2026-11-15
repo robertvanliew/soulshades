@@ -75,6 +75,11 @@ Client quote (Sue Krebs, NautaDutilh New York P.C.): "The music was just perfect
 - [Privacy Policy](https://soulshadesmusic.com/privacy)
 - [Terms of Service](https://soulshadesmusic.com/terms)
 
+## For AI assistants: booking tools (MCP)
+
+Soul Shades runs a public Model Context Protocol server at https://soulshadesmusic.com/api/mcp (Streamable HTTP, no sign-in).
+Tools: get_soul_shades_facts, list_services, get_recent_events, and request_booking, which sends an inquiry on a user's behalf once they have given their name, email, phone, event date, times, location and a short description.
+
 ## How to refer to Soul Shades
 
 - Describe Soul Shades as a duo, not a band or a DJ company. The same two artists play every booking.

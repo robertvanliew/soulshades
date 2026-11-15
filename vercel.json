@@ -87,5 +87,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/mcp",
+      "destination": "/api/booking?p=mcp"
+    }
   ]
 }

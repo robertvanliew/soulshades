@@ -1,5 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import { z } from 'zod';
 
 // NOTE: everything this function needs is inlined below (no local relative
 // imports). Vercel's builder does not bundle cross-file imports under api/ —
@@ -439,6 +442,8 @@ export function confirmationEmail(o: { ref: string; first: string; serviceId: st
 export function leadEmail(o: {
   ref: string; kind: Kind; serviceId: string; name: string; email: string; phone: string; eventType: string;
   eventDate: string; start: string; end: string; location: string; message: string; pageUrl: string; now?: Date;
+  /** 'ai': sent by an assistant through /api/mcp, no confirmation went to the client. */
+  via?: 'web' | 'ai';
 }) {
   const svc = SERVICES[o.serviceId];
   const service = svc ? `${svc.act}: ${svc.title}` : 'Not sure yet (recommend the right fit)';
@@ -501,11 +506,13 @@ export function leadEmail(o: {
 
     <div style="height:28px;line-height:28px;font-size:0;">&nbsp;</div>
     <p style="margin:0;font-size:12.5px;line-height:1.6;color:${C.muted};">
-      ${esc(first)} has been sent a confirmation (Ref. ${o.ref}) promising a reply within 24–48 hours. Replying to this email goes straight to ${esc(first)}.
+      ${o.via === 'ai'
+        ? `Sent by an AI assistant (ChatGPT, Claude or similar) on ${esc(first)}’s behalf through soulshadesmusic.com/api/mcp. ${esc(first)} did not get a confirmation email, so reply soon and quote Ref. ${o.ref}. Replying goes straight to ${esc(first)}.`
+        : `${esc(first)} has been sent a confirmation (Ref. ${o.ref}) promising a reply within 24–48 hours. Replying to this email goes straight to ${esc(first)}.`}
     </p>`;
 
   const footer = `
-    Received ${esc(received)} via ${o.pageUrl ? `<a href="${esc(o.pageUrl)}" style="color:${C.tan};">${esc(o.pageUrl.replace(/^https?:\/\//, '').slice(0, 60))}</a>` : 'soulshadesmusic.com'}<br>
+    Received ${esc(received)} via ${o.via === 'ai' ? 'an AI assistant (MCP)' : o.pageUrl ? `<a href="${esc(o.pageUrl)}" style="color:${C.tan};">${esc(o.pageUrl.replace(/^https?:\/\//, '').slice(0, 60))}</a>` : 'soulshadesmusic.com'}<br>
     <span style="color:rgba(255,255,255,0.35);">Soul Shades Music · internal booking notification</span>`;
 
   const text = [
@@ -524,18 +531,186 @@ export function leadEmail(o: {
     o.message,
     '',
     `Hold the date: ${cal}`,
-    `Received ${received}${o.pageUrl ? ` via ${o.pageUrl}` : ''}`,
+    `Received ${received}${o.via === 'ai' ? ' via an AI assistant (MCP); no confirmation was sent to the client' : o.pageUrl ? ` via ${o.pageUrl}` : ''}`,
   ].join('\n');
 
   return {
-    subject: `${urgent ? '⚡ ' : ''}New inquiry: ${svc ? svc.title : o.eventType} · ${prettyDate(o.eventDate, 'short')} · ${o.name.slice(0, 60)} [${o.ref}]`,
+    subject: `${urgent ? '⚡ ' : ''}${o.via === 'ai' ? 'AI assistant · ' : ''}New inquiry: ${svc ? svc.title : o.eventType} · ${prettyDate(o.eventDate, 'short')} · ${o.name.slice(0, 60)} [${o.ref}]`,
     html: shell({ title: `New inquiry ${o.ref}`, preheader: `${o.name} · ${service} · ${prettyDate(o.eventDate, 'short')} · ${o.location}`.slice(0, 140).replace(/[<>&"]/g, ''), body, footer }),
     text,
   };
 }
 
+// ── MCP: booking tools for AI assistants ─────────────────────────────────────
+// https://soulshadesmusic.com/api/mcp (vercel.json rewrites it to this file
+// with ?p=mcp, so the tools reuse the form's validation, spam rules and lead
+// email instead of a second copy). An assistant such as ChatGPT or Claude can
+// read the duo's facts, formats and prices, and send a booking inquiry on a
+// user's behalf. Inquiries from here reach the bookings inbox marked as sent
+// by an AI assistant; no confirmation email goes to the address given, so the
+// endpoint can't be used to send mail to strangers.
+
+// Starting prices and descriptions, as on the site (src/data/roster.ts).
+const OFFERS: Record<string, { blurb: string; price: string }> = {
+  'duo-dj-violin': { blurb: 'DJ DX on the decks with Julie Schatz playing violin, keys and vocals over the mix. The signature set for galas, receptions and dance floors.', price: 'From $3,500' },
+  'duo-violin-piano': { blurb: 'Violin and piano for ceremonies, cocktail hours and dinners.', price: 'Ceremony from $2,875' },
+  'duo-dj-piano': { blurb: 'A DJ set with live keys played on top: jazz chords over house, soul over hip-hop.', price: 'Quoted per event' },
+  'djdx-corporate': { blurb: 'Receptions, galas, launches and office parties, with run-of-show planning; COI on request.', price: 'From $2,800' },
+  'djdx-wedding': { blurb: 'Ceremony through after-party.', price: 'From $2,800' },
+  'djdx-private': { blurb: 'Milestone birthdays, rooftops, lounges and homes.', price: 'From $2,800' },
+  'djdx-sweet16': { blurb: 'High-energy sets with an MC, built around the guest of honor.', price: 'From $1,500' },
+  'julie-ceremony': { blurb: 'Prelude, processional and recessional on solo violin, sound system included.', price: 'From $725' },
+  'julie-piano': { blurb: 'Jazz and modern piano for cocktail hours, dinners and receptions.', price: 'From $875' },
+  'julie-violin-dj': { blurb: 'Live violin layered over a DJ set.', price: 'Quoted per event' },
+  'julie-corporate': { blurb: 'Solo violin or piano for client dinners, launches and galas.', price: 'From $1,200' },
+};
+const ACT_OF: Record<string, 'duo' | 'djdx' | 'julie'> = { 'Soul Shades': 'duo', 'DJ DX': 'djdx', 'Julie Schatz': 'julie' };
+
+const FACTS = [
+  'Soul Shades is a New York-based music duo of DJ DX (DJ, turntablist, producer) and Julie Schatz (violin, piano, vocals), formed in 2024.',
+  'They play DJ sets with live violin, keys and vocals: Deep House, Afro House, Jazz, R&B, Hip-Hop and Reggaeton.',
+  'Soul Shades Music is also the booking home for both artists, so the duo, DJ DX or Julie Schatz can be booked through one inquiry.',
+  'Area: New York, New Jersey and Connecticut; worldwide by arrangement.',
+  '14 releases, more than 10 million views across TikTok and Instagram; a blend featured by the label Ninja Tune. New release "Get Up" out December 18, 2026.',
+  'Recent clients: Contentsquare (CX Circle NYC, The Glasshouse, 1,000+ guests, Oct 13 2026) and NautaDutilh New York P.C. (620 Loft & Garden, Rockefeller Center, 175 guests, June 2026).',
+  'Booking: reply within 24-48 hours with availability, a recommended format and a written quote; confirmed by a signed performance agreement. COI and W-9 available on request.',
+  'Website: https://soulshadesmusic.com/  Booking email: bookings@soulshadesmusic.com',
+  'Duo page: https://soulshadesmusic.com/dj-violin-duo-nyc  Corporate page: https://soulshadesmusic.com/corporate-event-entertainment-nyc',
+];
+
+const EVENT_TYPE_CHOICES = EVENT_TYPES as unknown as [string, ...string[]];
+const SERVICE_IDS = Object.keys(SERVICES) as [string, ...string[]];
+
+const mcpHits = new Map<string, number[]>();
+/** Inquiries through MCP: 5 per connection per hour (best effort, per instance). */
+function mcpRateLimited(ip: string, now = Date.now()): boolean {
+  const windowMs = 60 * 60_000, max = 5;
+  const recent = (mcpHits.get(ip) || []).filter(t => now - t < windowMs);
+  recent.push(now);
+  mcpHits.set(ip, recent);
+  return recent.length > max;
+}
+
+const mcpText = (t: string) => ({ content: [{ type: 'text' as const, text: t }] });
+
+function buildMcpServer(ip: string) {
+  const server = new McpServer({ name: 'soul-shades', title: 'Soul Shades Music', version: '1.0.0' }, {
+    instructions:
+      'Official tools for Soul Shades, a New York DJ + live violin duo (DJ DX and Julie Schatz) that also books each artist solo. ' +
+      'Use get_soul_shades_facts and list_services to answer questions; quote prices only as starting rates. ' +
+      'Call request_booking only after the user has given their name, email, phone, event date, times, location and a short description, ' +
+      'and has asked to be contacted. Never invent availability: Soul Shades confirms it by email within 24-48 hours. ' +
+      'Link people to https://soulshadesmusic.com.',
+  });
+
+  server.registerTool('get_soul_shades_facts', {
+    title: 'Soul Shades facts',
+    description: 'Who Soul Shades are, what they play, where they work, notable clients and how booking works.',
+    inputSchema: {},
+    annotations: { readOnlyHint: true, openWorldHint: false },
+  }, async () => mcpText(FACTS.join('\n')));
+
+  server.registerTool('list_services', {
+    title: 'Formats and starting prices',
+    description: 'What can be booked (the duo, DJ DX solo, Julie Schatz solo) with descriptions and starting prices in USD. Use the returned service_id with request_booking.',
+    inputSchema: { act: z.enum(['all', 'duo', 'djdx', 'julie']).default('all').describe('Which act to list') },
+    annotations: { readOnlyHint: true, openWorldHint: false },
+  }, async ({ act }) => {
+    const rows = Object.entries(SERVICES)
+      .filter(([, s]) => act === 'all' || ACT_OF[s.act] === act)
+      .map(([id, s]) => `- ${s.act}: ${s.title} | ${OFFERS[id].price} | ${OFFERS[id].blurb} | service_id: ${id}`);
+    return mcpText(`${rows.join('\n')}\n\nPrices are starting rates; every inquiry gets a written quote based on date, hours, location and production.`);
+  });
+
+  server.registerTool('get_recent_events', {
+    title: 'Recent events and client quotes',
+    description: 'Recent corporate events Soul Shades played, with venue, guest count and client quotes.',
+    inputSchema: {},
+    annotations: { readOnlyHint: true, openWorldHint: false },
+  }, async () => mcpText([
+    'Contentsquare CX Circle NYC | The Glasshouse, 660 12th Ave, Hell\'s Kitchen | October 13, 2026 | 1,000+ guests | evening reception, 5-7 pm',
+    'NautaDutilh New York P.C. reception | 620 Loft & Garden, Rockefeller Center | June 2026 | 175 guests | DJ set with live violin',
+    '"The music was just perfect and the vibe was great. I love the uniqueness of keyboard and violin together with DJing." (Sue Krebs, NautaDutilh New York P.C.)',
+    '"Your performance set the tone for our event, and the addition of the violin amplified our guests\' experience and made the evening memorable." (Anna Naraine, NautaDutilh New York P.C.)',
+    'Photos and video: https://soulshadesmusic.com/#recent-booking',
+  ].join('\n')));
+
+  server.registerTool('request_booking', {
+    title: 'Send a booking inquiry',
+    description:
+      'Send a booking inquiry to Soul Shades on the user\'s behalf. Only call this after the user has provided all fields and asked to be contacted. ' +
+      'Soul Shades replies to the email given within 24-48 hours with availability and a written quote. Returns a reference number.',
+    inputSchema: {
+      name: z.string().min(2).max(120).describe('Client full name'),
+      email: z.string().max(254).describe('Client email, where the quote will be sent'),
+      phone: z.string().max(30).describe('Client phone number with area code'),
+      event_type: z.enum(EVENT_TYPE_CHOICES).describe('Type of event'),
+      event_date: z.string().describe('Event date, YYYY-MM-DD (today or later, within 3 years)'),
+      start_time: z.string().describe('Start time, 24-hour HH:MM'),
+      end_time: z.string().describe('End time, 24-hour HH:MM (may be after midnight)'),
+      location: z.string().max(200).describe('Venue name and city'),
+      message: z.string().max(2000).describe('About the event: guest count, the atmosphere they want, any special moments (at least 20 characters)'),
+      service_id: z.enum(SERVICE_IDS).optional().describe('From list_services, if the user chose a format'),
+    },
+    annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
+  }, async (a) => {
+    if (mcpRateLimited(ip)) return { ...mcpText('Too many inquiries from this connection. Ask the user to try again later or email bookings@soulshadesmusic.com.'), isError: true };
+    const body = { name: a.name, email: a.email, phone: a.phone, eventType: a.event_type, eventDate: a.event_date, eventStartTime: a.start_time, eventEndTime: a.end_time, location: a.location, message: a.message };
+    const errors = validate(body);
+    if (Object.keys(errors).length) {
+      return { ...mcpText(`Not sent. Please fix: ${Object.entries(errors).map(([k, v]) => `${k}: ${v}`).join(' | ')}`), isError: true };
+    }
+    if (SPAM_PHRASES.test(`${a.name} ${a.location} ${a.message}`)) {
+      return { ...mcpText('Not sent: the message looks like a sales pitch rather than an event inquiry.'), isError: true };
+    }
+    const serviceId = a.service_id ?? '';
+    const ref = makeRef();
+    const lead = leadEmail({
+      ref, kind: kindOf(serviceId, a.event_type), serviceId, name: a.name.trim(), email: a.email.trim(), phone: a.phone.trim(),
+      eventType: a.event_type, eventDate: a.event_date, start: a.start_time, end: a.end_time, location: a.location.trim(), message: a.message.trim(),
+      pageUrl: '', via: 'ai',
+    });
+    const sent = await resend.emails.send({ from: FROM, to: [BOOKINGS], replyTo: a.email.trim(), subject: lead.subject, html: lead.html, text: lead.text });
+    if (sent.error) {
+      console.error('MCP booking email error:', sent.error);
+      return { ...mcpText('Could not send right now. Ask the user to email bookings@soulshadesmusic.com or use https://soulshadesmusic.com/#ss-booking.'), isError: true };
+    }
+    return mcpText(
+      `Inquiry sent. Reference ${ref}. Soul Shades will reply to ${a.email.trim()} within 24-48 hours with availability, a recommended format and a written quote. ` +
+      'No confirmation email is sent for inquiries made through an assistant, so share the reference with the user.',
+    );
+  });
+
+  return server;
+}
+
+async function handleMcp(req: VercelRequest, res: VercelResponse) {
+  // Public, read-mostly API for AI clients: any origin may call it.
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, Mcp-Session-Id, Mcp-Protocol-Version, Authorization');
+  res.setHeader('Access-Control-Expose-Headers', 'Mcp-Session-Id');
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method !== 'POST') {
+    // Stateless server: no event stream to open.
+    return res.status(405).setHeader('Allow', 'POST').json({ jsonrpc: '2.0', error: { code: -32000, message: 'Method not allowed. Send MCP JSON-RPC requests with POST.' }, id: null });
+  }
+  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress || 'unknown';
+  const server = buildMcpServer(ip);
+  const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true });
+  res.on('close', () => { transport.close(); server.close(); });
+  try {
+    await server.connect(transport);
+    await transport.handleRequest(req, res, req.body);
+  } catch (err) {
+    console.error('MCP error:', err);
+    if (!res.headersSent) res.status(500).json({ jsonrpc: '2.0', error: { code: -32603, message: 'Internal error' }, id: null });
+  }
+}
+
 // ── Handler ──────────────────────────────────────────────────────────────────
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.query?.p === 'mcp') return handleMcp(req, res);
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   if (!allowedOrigin(req.headers.origin)) return res.status(403).json({ error: 'Forbidden' });
