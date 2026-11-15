@@ -8,6 +8,7 @@ export default function NotFound() {
     <PageShell>
       <Helmet>
         <title>Page not found | Soul Shades</title>
+        <meta name="description" content="This page doesn’t exist or has moved. Find Soul Shades formats and pricing, book the NYC DJ + live violin duo, or head back home." />
         <meta name="robots" content="noindex" />
       </Helmet>
       <div className="notfound">

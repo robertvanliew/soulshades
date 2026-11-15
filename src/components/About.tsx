@@ -1,6 +1,7 @@
 import Reveal from './Reveal';
 import { useBookingDialog } from './BookingDialog';
 import { DjDxMark, JulieSchatzMark, SoulShadesMark } from './Wordmarks';
+import { responsive } from '../lib/img';
 
 /* The bio is written to be quoted: the first paragraph answers "who is
    Soul Shades?" on its own (who, what, where, since when, what it sounds
@@ -84,7 +85,7 @@ export default function About() {
         <Reveal as="article" className="member">
           <a className="member-link" href="https://julieschatzmusic.com/" target="_blank" rel="noopener" aria-label="Julie Schatz — visit julieschatzmusic.com (opens in a new tab)">
             <img
-              src="/nautadutilh-julie-violin-cathedral-nyc.jpg"
+              {...responsive('/nautadutilh-julie-violin-cathedral-nyc.jpg', '(min-width: 901px) 50vw, 100vw')}
               alt="Julie Schatz playing violin beside the DJ booth at a rooftop reception in New York"
               width={1920}
               height={720}
@@ -102,7 +103,7 @@ export default function About() {
         <Reveal as="article" className="member" delay={0.1}>
           <a className="member-link" href="https://djdxmusic.com/" target="_blank" rel="noopener" aria-label="DJ DX — visit djdxmusic.com (opens in a new tab)">
             <img
-              src="/glasshouse-dj-dx-contentsquare-nyc.jpg"
+              {...responsive('/glasshouse-dj-dx-contentsquare-nyc.jpg', '(min-width: 901px) 50vw, 100vw')}
               alt="DJ DX at the decks at Contentsquare’s CX Circle NYC 2026, The Glasshouse, with the Hudson River at sunset behind him"
               width={1200}
               height={1600}

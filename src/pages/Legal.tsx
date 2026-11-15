@@ -35,6 +35,16 @@ function LegalPage({ path, title, description, intro, sections }: { path: string
         <meta property="og:url" content={`${SITE}${path}`} />
         <meta name="twitter:title" content={`${title} | Soul Shades`} />
         <meta name="twitter:description" content={description} />
+        <script type="application/ld+json">{JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': [
+            { '@type': 'WebPage', '@id': `${SITE}${path}#webpage`, url: `${SITE}${path}`, name: title, description, inLanguage: 'en-US', dateModified: '2026-11-13', isPartOf: { '@id': `${SITE}/#website` }, publisher: { '@id': `${SITE}/#soulshades` } },
+            { '@type': 'BreadcrumbList', itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Soul Shades', item: `${SITE}/` },
+              { '@type': 'ListItem', position: 2, name: title, item: `${SITE}${path}` },
+            ] },
+          ],
+        })}</script>
       </Helmet>
 
       <article className="legal">

@@ -24,12 +24,17 @@ export default function PageShell({ children }: { children: ReactNode }) {
 
       <footer className="page-foot">
         <p>© {new Date().getFullYear()} Soul Shades Music. All rights reserved.</p>
-        <nav aria-label="Legal">
+        <nav aria-label="Site">
+          <a href="/dj-violin-duo-nyc">DJ + live violin duo</a>
+          <a href="/corporate-event-entertainment-nyc">Corporate events</a>
           <a href="/privacy">Privacy</a>
           <a href="/terms">Terms</a>
           {TRACKING_CONFIGURED && <button type="button" onClick={openCookieSettings}>Cookie settings</button>}
           <a href="mailto:hello@soulshadesmusic.com">hello@soulshadesmusic.com</a>
         </nav>
+        <p className="footer-credit">
+          <a href="https://robertvanliew.com/" target="_blank" rel="noopener noreferrer">Design, development &amp; SEO by Robert Van Liew</a>
+        </p>
       </footer>
     </div>
   );

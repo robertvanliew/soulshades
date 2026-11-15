@@ -9,6 +9,7 @@ export default function ThankYou() {
     <PageShell>
       <Helmet>
         <title>Thank you for your order | Soul Shades</title>
+        <meta name="description" content="Thank you for your Soul Shades order. Your download links are on their way by email and usually arrive within a couple of minutes." />
         <meta name="robots" content="noindex" />
       </Helmet>
       <div className="notfound">

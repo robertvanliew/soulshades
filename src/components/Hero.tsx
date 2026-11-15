@@ -1,11 +1,12 @@
 import { SpotifyIcon } from './icons';
+import { responsive } from '../lib/img';
 
 const GENRES = ['Deep House', 'Jazz', 'Afro House', 'R&B', 'Hip-Hop', 'Reggaeton', 'Electronic'];
 
 export default function Hero() {
   return (
     <header className="ss-hero">
-      <img src="/ss-hero.jpg" alt="" className="ss-hero-bg" aria-hidden="true" />
+      <img {...responsive('/ss-hero.jpg', '(min-width: 901px) 62vw, 100vw')} alt="" className="ss-hero-bg" aria-hidden="true" fetchPriority="high" />
       <div className="ss-hero-overlay" aria-hidden="true" />
       <div className="ss-hero-orb ss-hero-orb--1" aria-hidden="true" />
       <div className="ss-hero-orb ss-hero-orb--2" aria-hidden="true" />

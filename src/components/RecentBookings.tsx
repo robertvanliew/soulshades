@@ -1,6 +1,7 @@
 import LightboxGroup from './LightboxGroup';
 import Reveal from './Reveal';
 import { useBookingDialog } from './BookingDialog';
+import { responsive, webp } from '../lib/img';
 
 /* "Where We've Played": each event is a short case study a planner can scan —
    who the client was, where, how many guests, what we played — followed by
@@ -138,7 +139,7 @@ function Shot({ m, className, delay, duration }: { m: Media; className: string; 
         <video
           data-lb
           src={m.src}
-          poster={m.poster}
+          poster={m.poster && webp(m.poster)}
           autoPlay
           muted
           loop
@@ -147,7 +148,7 @@ function Shot({ m, className, delay, duration }: { m: Media; className: string; 
           aria-label={m.alt}
         />
       ) : (
-        <img data-lb src={m.src} alt={m.alt} width={m.width} height={m.height} loading="lazy" decoding="async" />
+        <img data-lb {...responsive(m.src, className === 'cb-hero-shot' ? '(min-width: 1200px) 1136px, 100vw' : '(min-width: 901px) 33vw, 100vw')} alt={m.alt} width={m.width} height={m.height} loading="lazy" decoding="async" />
       )}
       {m.kind === 'video' && <span className="shot-badge"><PlayGlyph /> Video</span>}
       <span className="shot-cap" aria-hidden="true">{m.cap}</span>

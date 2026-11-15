@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageShell from '../components/PageShell';
 import { BookingDialogProvider, useBookingDialog } from '../components/BookingDialog';
+import { responsive } from '../lib/img';
 
 /* Landing pages for the two searches Soul Shades should own and that neither
    member's own site targets: the DJ + live violin duo, and corporate event
@@ -87,7 +88,7 @@ const Ext = ({ href, children }: { href: string; children: ReactNode }) => (
 const DUO: PageData = {
   path: '/dj-violin-duo-nyc',
   title: 'DJ + Live Violin Duo NYC | Weddings & Events | Soul Shades',
-  description: 'Soul Shades is a New York DJ and live violin duo: DJ DX on the decks, Julie Schatz on violin, keys and vocals. Weddings, corporate events and parties from $3,500.',
+  description: 'DJ DX on the decks and Julie Schatz on violin, keys and vocals: a New York DJ + live violin duo for weddings, galas and parties. From $3,500.',
   crumb: 'DJ + Live Violin Duo',
   label: 'The Duo',
   h1: <>DJ + Live Violin Duo <span>in New York City</span></>,
@@ -184,8 +185,8 @@ const DUO: PageData = {
 
 const CORPORATE: PageData = {
   path: '/corporate-event-entertainment-nyc',
-  title: 'Corporate Event Entertainment NYC | DJ + Live Violin | Soul Shades',
-  description: 'Live music for corporate events in New York: a DJ set with live violin, keys and vocals. Clients include Contentsquare and NautaDutilh. From $1,200 solo, $3,500 duo.',
+  title: 'Corporate Event Entertainment NYC | Soul Shades',
+  description: 'Live DJ + violin for NYC corporate events, trusted by Contentsquare and NautaDutilh. COI and W-9 on request. From $1,200 solo, $3,500 duo.',
   crumb: 'Corporate Events',
   label: 'Corporate Events',
   h1: <>Corporate Event Entertainment <span>in New York City</span></>,
@@ -343,7 +344,7 @@ function Body({ d }: { d: PageData }) {
           </div>
         </div>
         <div className="sp-hero-photo">
-          <img src={d.hero.src} alt={d.hero.alt} style={{ objectPosition: d.hero.position }} fetchPriority="high" />
+          <img {...responsive(d.hero.src, '(min-width: 901px) 460px, 100vw')} alt={d.hero.alt} style={{ objectPosition: d.hero.position }} fetchPriority="high" />
         </div>
       </header>
 
@@ -382,7 +383,7 @@ function Body({ d }: { d: PageData }) {
         <div className="sp-events">
           {EVENTS.map(ev => (
             <article className="sp-event" key={ev.title}>
-              <div className="sp-event-photo"><img src={ev.img} alt={ev.alt} loading="lazy" decoding="async" /></div>
+              <div className="sp-event-photo"><img {...responsive(ev.img, '(min-width: 901px) 560px, 100vw')} alt={ev.alt} loading="lazy" decoding="async" /></div>
               <div className="sp-event-body">
                 <p className="gig-meta">{ev.meta}</p>
                 <h3>{ev.title} <span>at {ev.venue}</span></h3>

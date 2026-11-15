@@ -3,6 +3,7 @@ import { useReducedMotion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { AppleMusicIcon, SpotifyIcon } from './icons';
 import Reveal from './Reveal';
+import { responsive, webp } from '../lib/img';
 
 const COVER = '/releases/get-up.jpg';
 const AMBIENT = '/releases/get-up-ambient.jpg';
@@ -63,7 +64,7 @@ function CoverArt() {
     <div className="nr-art">
       <img
         className="nr-cover"
-        src={COVER}
+        {...responsive(COVER, '(min-width: 901px) 440px, 90vw')}
         alt="Get Up by Soul Shades — cover art: a blue New York skyline under a burst of orange light"
         width={1500}
         height={1500}
@@ -77,7 +78,7 @@ function CoverArt() {
           loop
           playsInline
           preload="none"
-          poster={COVER}
+          poster={webp(COVER)}
           aria-hidden="true"
           tabIndex={-1}
           onPlaying={() => setPlaying(true)}
@@ -106,7 +107,7 @@ export default function NewRelease() {
           url: 'https://soulshadesmusic.com/#new-release',
         })}</script>
       </Helmet>
-      <img className="nr-ambient" src={AMBIENT} alt="" aria-hidden="true" />
+      <img className="nr-ambient" src={webp(AMBIENT)} alt="" aria-hidden="true" />
 
       <Reveal className="nr-cover-wrap" duration={0.9}>
         <CoverArt />

@@ -1,6 +1,7 @@
 import { useRef, useState, useSyncExternalStore } from 'react';
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'framer-motion';
 import Reveal from './Reveal';
+import { responsive } from '../lib/img';
 
 const ArrowUpRight = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -157,7 +158,7 @@ export default function Proof() {
             <AnimatePresence initial={false}>
               <motion.img
                 key={q.photo}
-                src={q.photo}
+                {...responsive(q.photo, '(min-width: 901px) 460px, 100vw')}
                 alt={q.photoAlt}
                 width={1600}
                 height={2133}

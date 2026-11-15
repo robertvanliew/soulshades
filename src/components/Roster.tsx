@@ -4,6 +4,7 @@ import { ROSTER } from '../data/roster';
 import { useBookingDialog } from './BookingDialog';
 import Reveal from './Reveal';
 import { DjDxMark, JulieSchatzMark, SoulShadesMark } from './Wordmarks';
+import { responsive } from '../lib/img';
 
 const MARK = { duo: SoulShadesMark, djdx: DjDxMark, julie: JulieSchatzMark } as const;
 
@@ -86,7 +87,7 @@ export default function Roster() {
               transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
             >
               <div className="rp-photo">
-                <img src={act.photo.src} alt={act.photo.alt} loading="lazy" decoding="async" style={{ objectPosition: act.photo.focus }} />
+                <img {...responsive(act.photo.src, '(min-width: 901px) 340px, 100vw')} alt={act.photo.alt} loading="lazy" decoding="async" style={{ objectPosition: act.photo.focus }} />
               </div>
 
               <div className="rp-body">

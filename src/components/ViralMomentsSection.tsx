@@ -13,7 +13,8 @@ import Reveal from './Reveal';
       play these posts in an embed ("Server error"), so the pop-up always
       offers "Watch on TikTok" underneath as the way out.
 
-   Optional cover art: public/viral/<id>.jpg is used as the card background. */
+   Optional cover art: public/viral/<id>.jpg is used as the card background
+   when the short has cover: true in src/data/viralShorts.ts. */
 
 const TikTokGlyph = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -55,7 +56,7 @@ function hasLocalVideo(id: string) {
 }
 
 function ShortCard({ s, onPlay }: { s: ViralShort; onPlay: () => void }) {
-  const [hasCover, setHasCover] = useState(true);
+  const [hasCover, setHasCover] = useState(!!s.cover);
 
   return (
     <div className="short">

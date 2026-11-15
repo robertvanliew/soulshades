@@ -17,6 +17,7 @@ import SiteFooter from './components/SiteFooter';
 import MusicStore from './components/MusicStore';
 import ViralMomentsSection from './components/ViralMomentsSection';
 import { defaultCatalog, fetchCatalog, type Track } from './catalog';
+import { responsive } from './lib/img';
 
 /* ── Merch — fulfilled by Creator-Spring, linked out rather than carted ── */
 const MERCH_STORE = 'https://my-store-101bc91.creator-spring.com';
@@ -47,8 +48,8 @@ const merch = [
 /* Home page title and descriptions. index.html carries the same text as
    static tags so link previews work without JavaScript; keep them in step. */
 const SEO = {
-  title: 'Soul Shades | NYC DJ + Live Violin Duo for Weddings & Corporate Events',
-  description: 'Soul Shades is the New York duo of DJ DX and violinist, pianist and vocalist Julie Schatz. Book the duo or either artist for weddings, corporate events and private parties. DJ + live violin from $3,500.',
+  title: 'Soul Shades | NYC DJ + Live Violin Duo for Weddings & Events',
+  description: 'NYC DJ + live violin duo DJ DX and Julie Schatz, for weddings, corporate events and private parties. Book the duo or either artist. From $3,500.',
   social: 'DJ DX and Julie Schatz: DJ sets with live violin, keys and vocals for weddings, corporate events and private parties in New York and beyond.',
 };
 
@@ -244,7 +245,7 @@ export default function App() {
               >
                 <div className="ss-merch-shot">
                   <img
-                    src={img}
+                    {...responsive(img, '(min-width: 901px) 33vw, 100vw')}
                     alt={`${name} — Soul Shades merch`}
                     width={800}
                     height={800}

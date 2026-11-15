@@ -1,5 +1,7 @@
 export interface ViralShort {
   id: string;
+  /** Set to true once public/viral/<id>.jpg exists (keep it under 100 KB). */
+  cover?: boolean;
   views: string;
   likes: string;
   comments: string;

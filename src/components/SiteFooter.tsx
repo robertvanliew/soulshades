@@ -67,8 +67,6 @@ export default function SiteFooter({ email = 'bookings@soulshadesmusic.com', boo
         <div className="footer-bottom">
           <p className="footer-copy">
             © {new Date().getFullYear()} Soul Shades Music. All rights reserved.
-            <span className="footer-sep" aria-hidden="true">·</span>
-            <a href="https://robertvanliew.com" {...ext} className="footer-designer-link">Site by Robert Van Liew</a>
           </p>
           <nav className="footer-legal" aria-label="Legal">
             <a href="/privacy">Privacy</a>
@@ -78,6 +76,9 @@ export default function SiteFooter({ email = 'bookings@soulshadesmusic.com', boo
           <a href={bookHref} className="footer-book-cta">{bookLabel} <span aria-hidden="true">→</span></a>
         </div>
 
+        <p className="footer-credit">
+          <a href="https://robertvanliew.com/" {...ext}>Design, development &amp; SEO by Robert Van Liew</a>
+        </p>
       </div>
     </footer>
   );
