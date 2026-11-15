@@ -20,7 +20,12 @@ import { createServer } from 'vite';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
-const template = readFileSync(join(dist, 'index.html'), 'utf8');
+// Stamp the commit being built (Vercel sets VERCEL_GIT_COMMIT_SHA) so the
+// IndexNow workflow can tell when this version is the one serving the site.
+const BUILD = process.env.VERCEL_GIT_COMMIT_SHA || 'local';
+const template = readFileSync(join(dist, 'index.html'), 'utf8')
+  .replace('</head>', `    <meta name="soulshades-build" content="${BUILD}" />
+  </head>`);
 
 const vite = await createServer({ root, server: { middlewareMode: true }, appType: 'custom', logLevel: 'error' });
 

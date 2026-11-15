@@ -1,30 +1,42 @@
-# After every successful production deploy on Vercel, tell Bing (and the other
-# IndexNow engines: Yandex, Naver, Seznam, Yep) to recrawl the site's pages.
-# Bing's index feeds Microsoft Copilot and ChatGPT search. Google ignores
-# IndexNow and reads the sitemap instead.
+# After each push to main, wait until Vercel is serving that commit, then tell
+# Bing (and the other IndexNow engines: Yandex, Naver, Seznam, Yep) to recrawl
+# the site's pages. Bing's index feeds Microsoft Copilot and ChatGPT search.
+# Google ignores IndexNow and reads the sitemap instead.
 #
-# Vercel's GitHub integration reports each deployment back to GitHub; this
-# workflow runs when that report says a production deployment succeeded.
+# Every built page carries <meta name="soulshades-build" content="<commit>">
+# (scripts/prerender.mjs), which is how this knows the new version is live.
 name: IndexNow
 
 on:
-  deployment_status:
+  push:
+    branches: [main]
 
 permissions:
   contents: read
 
+concurrency:
+  group: indexnow
+  cancel-in-progress: true
+
 jobs:
   submit:
-    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment.environment, 'Production')
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.deployment.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Wait for this commit to be live
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS https://soulshadesmusic.com/ | grep -q "content=\"${GITHUB_SHA}\""; then
+              echo "Live after about $((i * 10)) seconds"; exit 0
+            fi
+            sleep 10
+          done
+          echo "This commit did not go live within 10 minutes (deploy failed or skipped); not submitting."
+          exit 1
       # Every URL in the sitemap. The site is small, so this stays well within
       # IndexNow's guidance; switch to specific paths if it grows.
       - run: node scripts/indexnow.mjs --all
