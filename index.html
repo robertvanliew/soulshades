@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Soul Shades" />
     <meta name="theme-color" content="#0a0805" />
-    <!-- Icons: the stacked SOUL / SHADES logo. Rendered to images from the
-         site's own lettering, because a browser tab can't load web fonts. -->
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <!-- Icons: the stacked SOUL / SHADES logo on a transparent background.
+         favicon.svg switches between light and dark letters to suit the
+         browser's tab colour (Chrome, Edge, Firefox); the .ico/.png files
+         are a mid-tan that reads on both, for Safari and older browsers.
+         The phone home-screen icons keep their dark tile. -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
