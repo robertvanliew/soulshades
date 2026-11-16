@@ -29,7 +29,7 @@ function Body() {
         description: DESCRIPTION,
         isPartOf: { '@id': `${SITE}/#website` },
         about: { '@id': `${RELEASE_URL}#recording` },
-        primaryImageOfPage: `${SITE}/releases/get-up.jpg`,
+        primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE}/releases/get-up.jpg` },
       },
       {
         '@type': 'BreadcrumbList',

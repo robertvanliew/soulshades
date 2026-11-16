@@ -218,7 +218,7 @@ function Body({ d }: { d: Study }) {
         description: d.description,
         isPartOf: { '@id': `${SITE}/#website` },
         about: { '@id': `${url}#event` },
-        primaryImageOfPage: `${SITE}${d.event.image}`,
+        primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE}${d.event.image}` },
         breadcrumb: { '@id': `${url}#breadcrumb` },
       },
       {
