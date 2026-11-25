@@ -26,8 +26,10 @@ export default function PageShell({ children }: { children: ReactNode }) {
         <p>© {new Date().getFullYear()} Soul Shades Music. All rights reserved.</p>
         <nav aria-label="Site">
           <a href="/dj-violin-duo-nyc">DJ + live violin duo</a>
+          <a href="/wedding-dj-violin-duo-nyc">Weddings</a>
           <a href="/corporate-event-entertainment-nyc">Corporate events</a>
           <a href="/get-up">Get Up, the new release</a>
+          <a href="/epk">Press kit</a>
           <a href="/privacy">Privacy</a>
           <a href="/terms">Terms</a>
           {TRACKING_CONFIGURED && <button type="button" onClick={openCookieSettings}>Cookie settings</button>}

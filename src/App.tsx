@@ -4,6 +4,7 @@ import BookingForm from './components/BookingForm';
 import SiteNav from './components/SiteNav';
 import Hero from './components/Hero';
 import StreamStrip from './components/StreamStrip';
+import NewsletterSignup from './components/NewsletterSignup';
 import About from './components/About';
 import FAQ from './components/FAQ';
 import { BookingDialogProvider, EmailButton } from './components/BookingDialog';
@@ -279,6 +280,9 @@ export default function App() {
 
         {/* ── FOLLOW & STREAM ── */}
         <StreamStrip />
+
+        {/* ── MAILING LIST ── */}
+        <NewsletterSignup />
 
         {/* ── FAQ ── */}
         <FAQ />

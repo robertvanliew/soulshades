@@ -37,11 +37,14 @@ export default function SiteFooter({ email = 'bookings@soulshadesmusic.com', boo
             <a href="/#merch" className="footer-nav-link">Merch</a>
             <a href="/#videos" className="footer-nav-link">Videos</a>
             <a href="/#faq" className="footer-nav-link">FAQ</a>
+            <a href="/#newsletter" className="footer-nav-link">Mailing List</a>
+            <a href="/epk" className="footer-nav-link">Press Kit</a>
           </nav>
 
           <nav className="footer-nav-col" aria-label="Roster and booking">
             <span className="footer-nav-heading">Roster</span>
             <a href="/dj-violin-duo-nyc" className="footer-nav-link">DJ + live violin duo</a>
+            <a href="/wedding-dj-violin-duo-nyc" className="footer-nav-link">Weddings</a>
             <a href="/corporate-event-entertainment-nyc" className="footer-nav-link">Corporate events</a>
             <a href="https://djdxmusic.com/" {...ext} className="footer-nav-link">DJ DX <Out /></a>
             <a href="https://julieschatzmusic.com/" {...ext} className="footer-nav-link">Julie Schatz <Out /></a>

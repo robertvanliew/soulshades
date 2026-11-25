@@ -179,8 +179,8 @@ const DUO: PageData = {
     },
   ],
   related: [
+    { href: '/wedding-dj-violin-duo-nyc', label: 'Weddings', note: 'Ceremony to reception, one act' },
     { href: '/corporate-event-entertainment-nyc', label: 'Corporate event entertainment', note: 'Receptions, galas and launches' },
-    { href: '/#services', label: 'Every format and price', note: 'The duo, DJ DX and Julie Schatz' },
     { href: '/#recent-booking', label: 'Where we’ve played', note: 'Photos and video from recent events' },
   ],
 };
@@ -277,6 +277,105 @@ const CORPORATE: PageData = {
     { href: '/dj-violin-duo-nyc', label: 'The DJ + live violin duo', note: 'How the duo works, and what it costs' },
     { href: '/#recent-booking', label: 'Where we’ve played', note: 'Photos and video from both events' },
     { href: '/#services', label: 'Every format and price', note: 'The duo, DJ DX and Julie Schatz' },
+  ],
+};
+
+/* Weddings, as the duo. "Wedding DJ" and "wedding violinist" searches stay
+   with djdxmusic.com and julieschatzmusic.com; this page is for couples who
+   want both at once ("DJ and violinist for a wedding"), which only the duo
+   answers. It links out to the solo pages rather than repeating them. */
+const WEDDING: PageData = {
+  path: '/wedding-dj-violin-duo-nyc',
+  title: 'Wedding DJ + Violinist Duo NYC | Ceremony to Reception | Soul Shades',
+  description: 'One act from the aisle to the last dance: violin and piano for the ceremony, then DJ DX with Julie Schatz on live violin for the reception. NYC, NJ, CT.',
+  crumb: 'Weddings',
+  label: 'Weddings',
+  h1: <>Wedding DJ + Violinist <span>in New York City</span></>,
+  lead: (
+    <>
+      Soul Shades plays weddings from the ceremony to the last dance. A violin and piano duo for the ceremony and
+      cocktail hour, then DJ DX on the decks with Julie Schatz playing live violin, keys and vocals over the mix
+      for the reception. Ceremony music starts at $2,875 and the DJ + live violin reception at $3,500, in New
+      York, New Jersey and Connecticut.
+    </>
+  ),
+  serviceId: 'duo-dj-violin',
+  serviceName: 'Wedding DJ + Live Violin',
+  serviceType: 'Live music and DJ entertainment for weddings',
+  priceFrom: 2875,
+  hero: { src: '/julie-schatz-violin-cocktail-hour.jpg', alt: 'Julie Schatz in a black dress playing violin at an evening cocktail hour under string lights', position: '50% 18%' },
+  facts: [['Ceremony from', '$2,875'], ['Reception from', '$3,500'], ['Area', 'New York, New Jersey, Connecticut'], ['Reply', 'Within 24–48 hours']],
+  sections: [
+    {
+      h: 'Can one act play the ceremony and the reception?',
+      body: (
+        <>
+          <p>
+            Yes. Most weddings need two kinds of music: something live and unhurried for the ceremony and cocktail
+            hour, and a dance floor later. Couples usually hire a string player and a DJ separately for that.
+            Soul Shades covers both, with one inquiry, one written quote and one contact for your planner.
+          </p>
+          <p>
+            For the ceremony and cocktail hour, the violin and piano duo plays while guests arrive, during the
+            processional and recessional, and through drinks. For the reception, DJ DX takes the decks and Julie
+            plays over his set, so the violin you heard at the aisle is still there for the first dance and the
+            last song.
+          </p>
+        </>
+      ),
+    },
+    {
+      h: 'What does live violin add to a wedding reception?',
+      body: (
+        <>
+          <p>
+            A DJ plays the songs your guests know. A violinist playing over them in real time turns a familiar
+            record into a moment: the grand entrance, the first dance, the song that fills the floor. Because Julie
+            and DJ DX are a duo who write and release music together, the violin is part of the set rather than a
+            feature dropped on top of it.
+          </p>
+          <p>
+            The music runs through Deep House, Afro House, Jazz, R&amp;B, Hip-Hop and Reggaeton. You can{' '}
+            <a href="/#videos">watch them perform</a> or read how the duo works on the{' '}
+            <a href="/dj-violin-duo-nyc">DJ + live violin duo page</a>.
+          </p>
+        </>
+      ),
+    },
+  ],
+  formatsTitle: 'Wedding formats and starting prices',
+  formats: [
+    { name: 'Ceremony: Violin + Piano Duo', bestFor: 'Prelude, processional and recessional, and on into cocktail hour or dinner.', price: 'From $2,875' },
+    { name: 'Reception: DJ + Live Violin', bestFor: 'The dance floor, with Julie on violin, keys and vocals over DJ DX’s set.', price: 'From $3,500' },
+    { name: 'Ceremony to reception', bestFor: 'Both of the above, with one quote and one contact for the whole day.', price: 'Quoted per wedding' },
+  ],
+  quotes: [SUE],
+  faqs: [
+    {
+      q: 'How much does a DJ and violinist cost for a wedding in NYC?',
+      text: 'With Soul Shades, ceremony music with the violin and piano duo starts at $2,875, and the DJ + live violin reception starts at $3,500. A full day from ceremony to reception is quoted per wedding, based on the date, hours, location and production.',
+      a: <>With Soul Shades, ceremony music with the violin and piano duo starts at $2,875, and the DJ + live violin reception starts at $3,500. A full day from ceremony to reception is quoted per wedding, based on the date, hours, location and production.</>,
+    },
+    {
+      q: 'Can we book only the DJ or only the violinist for our wedding?',
+      text: 'Yes. DJ DX books weddings on his own from $2,800, and Julie Schatz plays wedding ceremonies on solo violin from $725. One inquiry reaches both of them.',
+      a: <>Yes. DJ DX books weddings on his own from $2,800 (<Ext href="https://djdxmusic.com/wedding-dj-nyc-nj">djdxmusic.com</Ext>), and Julie Schatz plays wedding ceremonies on solo violin from $725 (<Ext href="https://julieschatzmusic.com/wedding-violinist-nyc/">julieschatzmusic.com</Ext>). One inquiry here reaches both of them.</>,
+    },
+    {
+      q: 'Where do you play weddings?',
+      text: 'New York City, New Jersey and Connecticut, and worldwide by arrangement.',
+      a: <>New York City, New Jersey and Connecticut, and worldwide by arrangement.</>,
+    },
+    {
+      q: 'How do we book Soul Shades for our wedding?',
+      text: 'Send an inquiry with your date, times and venue. We reply within 24 to 48 hours with availability, a recommended format and a written quote, and a signed performance agreement secures the date.',
+      a: <>Send an inquiry with your date, times and venue. We reply within 24 to 48 hours with availability, a recommended format and a written quote, and a signed performance agreement secures the date.</>,
+    },
+  ],
+  related: [
+    { href: '/dj-violin-duo-nyc', label: 'The DJ + live violin duo', note: 'How the duo works, and what it costs' },
+    { href: '/#services', label: 'Every format and price', note: 'The duo, DJ DX and Julie Schatz' },
+    { href: '/epk', label: 'Press kit', note: 'Bios, photos and logos' },
   ],
 };
 
@@ -452,3 +551,4 @@ const make = (d: PageData) => function ServicePage() {
 
 export const DuoPage = make(DUO);
 export const CorporatePage = make(CORPORATE);
+export const WeddingPage = make(WEDDING);

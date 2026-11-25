@@ -119,6 +119,7 @@ export default function SiteNav() {
               <li><a href="#catalog" onClick={close}>Music Store</a></li>
               <li><a href="#merch" onClick={close}>Merch</a></li>
               <li><a href="#viral" onClick={close}>Viral Moments</a></li>
+              <li><a href="/epk">Press Kit</a></li>
               <li><a href="#ss-booking" onClick={close} className="nav-drawer-book">Book Now</a></li>
             </ul>
             <div className="nav-drawer-streams">

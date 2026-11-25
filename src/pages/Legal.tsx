@@ -84,6 +84,7 @@ const PRIVACY: Section[] = [
     body: (
       <>
         <p><strong>When you send a booking inquiry</strong>, we collect what you type into the form: your name, email, phone number, the event type, date, times and location, the act or service you’re interested in, and your message.</p>
+        <p><strong>When you join our mailing list</strong>, we collect your email address and, if you give it, your first name.</p>
         <p><strong>When you buy music</strong>, we collect your email address (to deliver your download) and your name if you give it. Card details go straight to Stripe; we never see or store them.</p>
         <p><strong>When you browse</strong>, our hosting provider records standard technical data such as IP address, browser type and the pages requested. If you accept cookies, analytics tools also record how you use the site (see <a href="#cookies">Cookies and analytics</a>).</p>
         <p>We don’t ask for, and don’t want, sensitive personal information. Please don’t include it in your message.</p>
@@ -99,10 +100,11 @@ const PRIVACY: Section[] = [
           <li>To reply to your inquiry, check our availability and prepare a quote.</li>
           <li>To send you a confirmation that we received your inquiry.</li>
           <li>To process your purchase and email your download link.</li>
+          <li>If you joined our mailing list, to email you news about Soul Shades: new releases, mixes and shows. Every email has a one-click unsubscribe link.</li>
           <li>To keep the site secure and stop spam and abuse.</li>
           <li>To understand which pages are useful, if you’ve accepted analytics cookies.</li>
         </ul>
-        <p>We don’t sell or rent your personal information, and sending an inquiry does not add you to a mailing list.</p>
+        <p>We don’t sell or rent your personal information. Sending an inquiry or buying music does not add you to our mailing list; only signing up for it does.</p>
       </>
     ),
   },
@@ -114,7 +116,7 @@ const PRIVACY: Section[] = [
         <p>We use a small number of providers to run the site. Each receives only what it needs to do its job:</p>
         <ul>
           <li><strong>Vercel</strong>: website hosting.</li>
-          <li><strong>Resend</strong>: sends booking notifications, inquiry confirmations and purchase emails.</li>
+          <li><strong>Resend</strong>: sends booking notifications, inquiry confirmations and purchase emails, and stores our mailing list and sends its emails.</li>
           <li><strong>Formspree</strong>: a backup route for booking inquiries if our own system is unavailable.</li>
           <li><strong>ImprovMX and Google (Gmail)</strong>: receive and store email sent to our addresses.</li>
           <li><strong>Stripe</strong>: payment processing for the music store. See <Ext href="https://stripe.com/privacy">Stripe’s Privacy Policy</Ext>.</li>
@@ -141,7 +143,7 @@ const PRIVACY: Section[] = [
     title: 'How long we keep it',
     body: (
       <>
-        <p>We keep booking inquiries and the emails that follow for as long as needed to plan and deliver your event, and afterwards as ordinary business records. We keep purchase records for as long as needed to support your purchase and to meet tax and accounting obligations.</p>
+        <p>We keep booking inquiries and the emails that follow for as long as needed to plan and deliver your event, and afterwards as ordinary business records. We keep purchase records for as long as needed to support your purchase and to meet tax and accounting obligations. We keep mailing list sign-ups until you unsubscribe or ask us to remove you.</p>
         <p>You can ask us to delete your information at any time (see below), and we will unless we’re required to keep it.</p>
       </>
     ),
